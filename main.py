@@ -20,7 +20,7 @@ def write_file(path, data):
 
 
 def interactive_menu():
-    print("       Welcome to Cryptix")
+    print("\n Welecome to Cryptix")
     print("===========================\n")
 
     # Select algorithm
