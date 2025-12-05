@@ -1,5 +1,6 @@
 ﻿import argparse
 import os
+import sys
 
 # Import algorithms
 from algorithms.caesar import encrypt as caesar_encrypt, decrypt as caesar_decrypt
@@ -18,12 +19,103 @@ def write_file(path, data):
         file.write(data)
 
 
+# ================================
+#      INTERACTIVE MENU MODE
+# ================================
+def interactive_menu():
+    print("\n===========================")
+    print("       Welcome to Cryptix")
+    print("===========================\n")
+
+    # Select algorithm
+    print("Choose Algorithm:")
+    print("1) Caesar Cipher")
+    print("2) Substitution Cipher")
+    algo_choice = input("Enter choice (1 or 2): ")
+
+    if algo_choice == "1":
+        algo = "caesar"
+    elif algo_choice == "2":
+        algo = "substitution"
+    else:
+        print("Invalid choice.")
+        return
+
+    # Select mode
+    print("\nChoose Mode:")
+    print("1) Encrypt")
+    print("2) Decrypt")
+    mode_choice = input("Enter choice (1 or 2): ")
+
+    if mode_choice == "1":
+        mode = "encrypt"
+    elif mode_choice == "2":
+        mode = "decrypt"
+    else:
+        print("Invalid mode.")
+        return
+
+    # Algorithm-specific inputs
+    shift = None
+    key = None
+
+    if algo == "caesar":
+        shift = int(input("\nEnter shift number: "))
+
+    elif algo == "substitution":
+        key = input("\nEnter 26-letter substitution key: ")
+        if len(key) != 26:
+            print("Key must be exactly 26 letters.")
+            return
+
+    # Choose input method
+    print("\nChoose input method:")
+    print("1) Enter text manually")
+    print("2) Read from file")
+    input_choice = input("Enter choice (1 or 2): ")
+
+    if input_choice == "1":
+        text = input("\nEnter your text: ")
+
+    elif input_choice == "2":
+        infile = input("\nEnter input file path: ")
+        text = read_file(infile)
+
+    else:
+        print("Invalid choice.")
+        return
+
+    # Execute algorithm
+    if algo == "caesar":
+        result = caesar_encrypt(text, shift) if mode == "encrypt" else caesar_decrypt(text, shift)
+
+    else:  # substitution
+        result = subs_encrypt(text, key) if mode == "encrypt" else subs_decrypt(text, key)
+
+    # Show result
+    print("\n==================== Result ====================")
+    print(result)
+    print("================================================\n")
+
+    # Ask to save output
+    save = input("Do you want to save the result to a file? (y/n): ")
+
+    if save.lower() == "y":
+        outfile = input("Enter output file path: ")
+        write_file(outfile, result)
+        print(f"\n✨ Output saved successfully to: {outfile}\n")
+    else:
+        print("\nResult not saved.\n")
+
+
+# ================================
+#       COMMAND-LINE MODE
+# ================================
 def main():
     parser = argparse.ArgumentParser(
         description="Cryptix - Text Encryption and Decryption Tool"
     )
 
-    # Required arguments
     parser.add_argument("--algo", required=True,
                         choices=["caesar", "substitution"],
                         help="Choose the encryption algorithm")
@@ -63,10 +155,7 @@ def main():
             print("Error: --shift is required for Caesar Cipher")
             return
 
-        if args.mode == "encrypt":
-            result = caesar_encrypt(text, args.shift)
-        else:
-            result = caesar_decrypt(text, args.shift)
+        result = caesar_encrypt(text, args.shift) if args.mode == "encrypt" else caesar_decrypt(text, args.shift)
 
     # ===============================
     #    SUBSTITUTION CIPHER
@@ -76,21 +165,19 @@ def main():
             print("Error: Substitution Cipher requires a 26-letter key")
             return
 
-        if args.mode == "encrypt":
-            result = subs_encrypt(text, args.key)
-        else:
-            result = subs_decrypt(text, args.key)
+        result = subs_encrypt(text, args.key) if args.mode == "encrypt" else subs_decrypt(text, args.key)
 
-    else:
-        print("Unknown algorithm selected.")
-        return
-
-    # Save encrypted/decrypted output
     write_file(args.outfile, result)
-
     print(f"\nSuccess! Output saved to → {args.outfile}\n")
     print("CRYPTIX is now complete 🚀✨")
 
 
-if __name__== "__main__":
-    main()
+# ================================
+#       PROGRAM ENTRY POINT
+# ================================
+if __name__=="__main__":
+    # If the user runs python main.py with NO arguments → open menu mode
+    if len(sys.argv) == 1:
+        interactive_menu()
+    else:
+        main()
