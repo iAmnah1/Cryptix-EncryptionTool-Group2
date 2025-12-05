@@ -8,7 +8,7 @@ from algorithms.substitution import encrypt as subs_encrypt, decrypt as subs_dec
 
 
 def read_file(path):
-    """Reads the entire text from a file."""
+    """Reads the text from a file."""
     with open(path, "r", encoding="utf-8") as file:
         return file.read()
 
@@ -19,11 +19,7 @@ def write_file(path, data):
         file.write(data)
 
 
-# ================================
-#      INTERACTIVE MENU MODE
-# ================================
 def interactive_menu():
-    print("\n===========================")
     print("       Welcome to Cryptix")
     print("===========================\n")
 
@@ -55,7 +51,7 @@ def interactive_menu():
         print("Invalid mode.")
         return
 
-    # Algorithm-specific inputs
+    # Algorithm input
     shift = None
     key = None
 
@@ -70,7 +66,7 @@ def interactive_menu():
 
     # Choose input method
     print("\nChoose input method:")
-    print("1) Enter text manually")
+    print("1) Enter text")
     print("2) Read from file")
     input_choice = input("Enter choice (1 or 2): ")
 
@@ -93,7 +89,7 @@ def interactive_menu():
         result = subs_encrypt(text, key) if mode == "encrypt" else subs_decrypt(text, key)
 
     # Show result
-    print("\n==================== Result ====================")
+    print("Result")
     print(result)
     print("================================================\n")
 
@@ -108,9 +104,8 @@ def interactive_menu():
         print("\nResult not saved.\n")
 
 
-# ================================
+
 #       COMMAND-LINE MODE
-# ================================
 def main():
     parser = argparse.ArgumentParser(
         description="Cryptix - Text Encryption and Decryption Tool"
@@ -147,9 +142,9 @@ def main():
     # Read input text
     text = read_file(args.infile)
 
-    # ===============================
-    #       CAESAR CIPHER
-    # ===============================
+    
+    #CAESAR CIPHER
+    
     if args.algo == "caesar":
         if args.shift is None:
             print("Error: --shift is required for Caesar Cipher")
@@ -157,9 +152,8 @@ def main():
 
         result = caesar_encrypt(text, args.shift) if args.mode == "encrypt" else caesar_decrypt(text, args.shift)
 
-    # ===============================
-    #    SUBSTITUTION CIPHER
-    # ===============================
+    #SUBSTITUTION CIPHER
+
     elif args.algo == "substitution":
         if args.key is None or len(args.key) != 26:
             print("Error: Substitution Cipher requires a 26-letter key")
@@ -172,9 +166,7 @@ def main():
     print("CRYPTIX is now complete 🚀✨")
 
 
-# ================================
-#       PROGRAM ENTRY POINT
-# ================================
+
 if __name__=="__main__":
     # If the user runs python main.py with NO arguments → open menu mode
     if len(sys.argv) == 1:
