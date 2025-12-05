@@ -25,7 +25,7 @@ The tool supports:
  ├── samples/
  ├── main.py
  ├── README.md
- └── logo.png
+ └── logo.jpg
 # Algorithms Used
 1. Caesar Cipher
 
