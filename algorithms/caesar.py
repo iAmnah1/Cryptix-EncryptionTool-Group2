@@ -1,16 +1,23 @@
 
 # algorithms/caesar.py
-def encrypt(plaintext, shift):
-   
-    encrypted_text = ""
-    for char in plaintext:
-        if char.isalpha():
-            shift_base = ord('A') if char.isupper() else ord('a')
-            encrypted_char = chr((ord(char) - shift_base + shift) % 26 + shift_base)
-            encrypted_text += encrypted_char
+
+import string
+
+def encrypt(plaintext, key):
+    alphabet = string.ascii_lowercase
+    encrypted_word = ""
+    for letter in plaintext:
+        if letter in alphabet:
+            original_position = alphabet.index(letter)
+            new_position = (original_position + key) % 26
+            new_letter = alphabet[new_position]
+            if letter.isupper():
+                encrypted_word += new_letter.upper()
+            else:
+                encrypted_word += new_letter
         else:
-            encrypted_text += char
-    return encrypted_text
-def decrypt(ciphertext, shift):
-    
-    return encrypt(ciphertext, -shift)
+            encrypted_word += letter
+    return encrypted_word
+
+def decrypt(plaintext, key):
+    return encrypt(plaintext, -key)
