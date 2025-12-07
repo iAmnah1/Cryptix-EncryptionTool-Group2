@@ -81,8 +81,8 @@ This enables switching between CLI mode and Interactive Menu mode.
 
 # Cryptix Team
 1.Amnah Abdullah Mukhtar
-2.
-3.
-4.
-5.
+2.Ghidaa Ahmed Basorah
+3.Ghaidaa Fahd Alharbi
+4.Maryam Mousaad Alasiri
+5.Reham Ali Alsahli
 
