@@ -168,7 +168,7 @@ def main():
 
 
 if __name__=="__main__":
-    # If the user runs python main.py with NO arguments → open menu mode
+    
     if len(sys.argv) == 1:
         interactive_menu()
     else:
